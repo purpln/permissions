@@ -4,6 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "Permissions",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v11),
         .macOS(.v10_14),
@@ -12,7 +13,7 @@ let package = Package(
     ],
     products: [
         .library(name: "NotificationPermission", targets: ["NotificationPermission"]),
-        .library(name: "BluetoothPermission", targets: ["BluetoothPermission"]),
+        .library(name: "BluetoothPermission", targets: ["BluetoothPermission"])
     ],
     dependencies: [],
     targets: [
@@ -29,5 +30,6 @@ let package = Package(
                     .define("PERMISSIONS_BLUETOOTH"),
                     .define("PERMISSIONS_SPM")
                 ])
-    ]
+    ],
+    swiftLanguageVersions: [.v5]
 )
