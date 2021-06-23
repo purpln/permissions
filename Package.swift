@@ -12,8 +12,8 @@ let package = Package(
         .watchOS(.v3)
     ],
     products: [
-        .library(name: "NotificationPermission", targets: ["NotificationPermission"]),
-        .library(name: "BluetoothPermission", targets: ["BluetoothPermission"])
+        .library(name: "NotificationPermission", type: .dynamic, targets: ["NotificationPermission"]),
+        .library(name: "BluetoothPermission", type: .dynamic, targets: ["BluetoothPermission"])
     ],
     dependencies: [],
     targets: [
