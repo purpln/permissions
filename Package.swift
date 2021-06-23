@@ -1,28 +1,33 @@
 // swift-tools-version:5.3
-// The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
     name: "Permissions",
+    platforms: [
+        .iOS(.v11),
+        .macOS(.v10_10),
+        .tvOS(.v11),
+        .watchOS(.v3)
+    ],
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
-        .library(
-            name: "Permissions",
-            targets: ["Permissions"]),
+        .library(name: "NotificationPermission", targets: ["NotificationPermission"]),
+        .library(name: "BluetoothPermission", targets: ["BluetoothPermission"]),
     ],
-    dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
-    ],
+    dependencies: [],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
-        .target(
-            name: "Permissions",
-            dependencies: []),
-        .testTarget(
-            name: "PermissionsTests",
-            dependencies: ["Permissions"]),
+        .target(name: "Permissions", dependencies: [],
+                resources: [.process("Resources")],
+                swiftSettings: [.define("PERMISSIONS_SPM")]),
+        .target(name: "NotificationPermission", dependencies: [.target(name: "Permissions")],
+                swiftSettings: [
+                    .define("PERMISSIONS_NOTIFICATION"),
+                    .define("PERMISSIONS_SPM")
+                ]),
+        .target(name: "BluetoothPermission", dependencies: [.target(name: "Permissions")],
+                swiftSettings: [
+                    .define("PERMISSIONS_BLUETOOTH"),
+                    .define("PERMISSIONS_SPM")
+                ])
     ]
 )
