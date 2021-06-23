@@ -6,7 +6,7 @@ let package = Package(
     name: "Permissions",
     platforms: [
         .iOS(.v11),
-        .macOS(.v10_10),
+        .macOS(.v10_14),
         .tvOS(.v11),
         .watchOS(.v3)
     ],

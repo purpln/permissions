@@ -20,7 +20,7 @@ public class BluetoothPermission: Permission {
     open var usageDescriptionKey: String? { "NSBluetoothAlwaysUsageDescription" }
     
     public override var status: Status {
-        if #available(iOS 13.1, tvOS 13.1, *) {
+        if #available(iOS 13.1, tvOS 13.1, macOS 10.15, *) {
             switch CBCentralManager.authorization {
             case .allowedAlways: return .authorized
             case .notDetermined: return .notDetermined
