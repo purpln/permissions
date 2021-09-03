@@ -4,17 +4,13 @@ import Permissions
 
 #if PERMISSIONS_NOTIFICATION
 
-import Foundation
 import UserNotifications
 
 public extension Permission {
-    static var notification: NotificationPermission {
-        return NotificationPermission()
-    }
+    static var notification: NotificationPermission { NotificationPermission() }
 }
 
 public class NotificationPermission: Permission {
-    
     open override var type: Type { .notification }
     
     public override var status: Status {
@@ -44,10 +40,8 @@ public class NotificationPermission: Permission {
     
     public override func request(completion: @escaping () -> Void) {
         let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
-            DispatchQueue.main.async {
-                completion()
-            }
+        center.requestAuthorization(options:[.badge, .alert, .sound]) { _, _ in
+            DispatchQueue.main.async { completion() }
         }
     }
 }

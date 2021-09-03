@@ -4,20 +4,15 @@ import Permissions
 
 #if PERMISSIONS_BLUETOOTH
 
-import Foundation
 import CoreBluetooth
 
 public extension Permission {
-
-    static var bluetooth: BluetoothPermission {
-        return BluetoothPermission()
-    }
+    static var bluetooth: BluetoothPermission { BluetoothPermission() }
 }
 
 public class BluetoothPermission: Permission {
-    
     open override var type: Type { .bluetooth }
-    open var usageDescriptionKey: String? { "NSBluetoothAlwaysUsageDescription" }
+    open override var description: String { "NSBluetoothAlwaysUsageDescription" }
     
     public override var status: Status {
         if #available(iOS 13.1, tvOS 13.1, macOS 10.15, *) {
@@ -48,46 +43,38 @@ public class BluetoothPermission: Permission {
     }
     
     public override func request(completion: @escaping () -> Void) {
-        BluetoothHandler.shared.completion = completion
-        BluetoothHandler.shared.reqeustUpdate()
+        BluetoothHandler.shared = BluetoothHandler()
+        BluetoothHandler.shared?.request {
+            DispatchQueue.main.async {
+                completion()
+                BluetoothHandler.shared = nil
+            }
+        }
     }
 }
 
-class BluetoothHandler: NSObject, CBCentralManagerDelegate {
-    
+class BluetoothHandler: NSObject {
+    static var shared: BluetoothHandler?
+    lazy var manager: CBCentralManager = CBCentralManager()
     var completion: ()->Void = {}
     
-    static let shared: BluetoothHandler = .init()
-    
-    override init() {
-        super.init()
-    }
-    
-    var manager: CBCentralManager?
-    
-    func reqeustUpdate() {
-        if manager == nil {
-            self.manager = CBCentralManager(delegate: self, queue: nil, options: [:])
-        } else {
-            completion()
+    func request(_ completion: @escaping () -> Void) {
+        self.completion = completion
+        switch CBPeripheralManager.authorizationStatus() {
+        case .notDetermined: self.manager.delegate = self
+        default: self.completion()
         }
     }
     
+    override init() { super.init() }
+    deinit { manager.delegate = nil }
+}
+
+extension BluetoothHandler: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         if #available(iOS 13.0, tvOS 13, *) {
-            switch central.authorization {
-            case .notDetermined:
-                break
-            default:
-                self.completion()
-            }
-        } else {
-            switch CBPeripheralManager.authorizationStatus() {
-            case .notDetermined:
-                break
-            default:
-                self.completion()
-            }
+            if central.authorization == .notDetermined { return }
+            self.completion()
         }
     }
 }
