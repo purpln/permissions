@@ -6,12 +6,10 @@ import Permissions
 
 import LocalAuthentication
 
-@available(iOS 10.0, macCatalyst 13.0, *)
 public extension Permission {
     static var authentication: AuthenticationPermision { AuthenticationPermision() }
 }
 
-@available(iOS 10.0, macCatalyst 13.0, *)
 public class AuthenticationPermision: Permission {
     open override var type: Type { .authentication }
     open override var description: String { "NSFaceIDUsageDescription" }
