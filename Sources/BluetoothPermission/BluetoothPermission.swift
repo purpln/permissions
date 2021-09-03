@@ -60,6 +60,15 @@ class BluetoothHandler: NSObject {
     
     func request(_ completion: @escaping () -> Void) {
         self.completion = completion
+        manager.delegate = self
+    }
+    
+    override init() { super.init() }
+    deinit { manager.delegate = nil }
+}
+
+extension BluetoothHandler: CBCentralManagerDelegate {
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
         if #available(iOS 13.0, tvOS 13, *) {
             switch CBPeripheralManager().authorization {
             case .notDetermined: break
@@ -70,18 +79,6 @@ class BluetoothHandler: NSObject {
             case .notDetermined: break
             default: self.completion()
             }
-        }
-    }
-    
-    override init() { super.init() }
-    deinit { manager.delegate = nil }
-}
-
-extension BluetoothHandler: CBCentralManagerDelegate {
-    func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        if #available(iOS 13.0, tvOS 13, *) {
-            if central.authorization == .notDetermined { return }
-            self.completion()
         }
     }
 }

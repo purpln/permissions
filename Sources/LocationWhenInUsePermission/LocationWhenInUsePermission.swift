@@ -31,8 +31,8 @@ public class LocationWhenInUse: Permission {
         case .denied: return .denied
         case .notDetermined: return .notDetermined
         case .restricted: return .denied
-        case .authorizedAlways: return .authorized
-        case .authorizedWhenInUse: return .denied
+        case .authorizedAlways: return .denied
+        case .authorizedWhenInUse: return .authorized
         @unknown default: return .denied
         }
     }

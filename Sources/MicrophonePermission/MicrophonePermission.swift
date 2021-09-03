@@ -6,12 +6,10 @@ import Permissions
 
 import AVFoundation
 
-@available(iOS 10.0, macCatalyst 14.0, *)
 public extension Permission {
     static var microphone: MicrophonePermission { MicrophonePermission() }
 }
 
-@available(iOS 10.0, macCatalyst 14.0, *)
 public class MicrophonePermission: Permission {
     open override var type: Type { .microphone }
     open override var description: String { "NSMicrophoneUsageDescription" }
