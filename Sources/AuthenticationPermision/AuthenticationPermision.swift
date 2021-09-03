@@ -33,7 +33,7 @@ public class AuthenticationPermision: Permission {
     }
     
     public override func request(completion: @escaping () -> Void) {
-        LAContext().evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "") { _, _ in
+        LAContext().evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: " ") { _, _ in
             DispatchQueue.main.async { completion() }
         }
     }

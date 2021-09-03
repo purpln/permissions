@@ -7,7 +7,7 @@ import Permissions
 import Photos
 
 public extension Permission {
-    static var camera: PhotosPermission { PhotosPermission() }
+    static var photos: PhotosPermission { PhotosPermission() }
 }
 
 public class PhotosPermission: Permission {
