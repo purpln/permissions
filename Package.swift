@@ -28,7 +28,6 @@ let package = Package(
     dependencies: [],
     targets: [
         .target(name: "Permissions", dependencies: [],
-                resources: [.process("Resources")],
                 swiftSettings: [.define("PERMISSIONS_SPM")]),
         .target(name: "AuthenticationPermision", dependencies: [.target(name: "Permissions")],
                 swiftSettings: [
